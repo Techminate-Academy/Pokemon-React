@@ -2,27 +2,35 @@
     "tasks": [
       {
         "id": "1",
-        "title": "New React Website",
+        "title": "React App",
         "body": "It's difficult to find examples of lorem ipsum in use before Letraset made it popular as a dummy text in the 1960s, although McClintock says he remembers coming across the lorem ipsum passage in a book of old metal type samples. So far he hasn't relocated where he once saw the passage, but the popularity of Cicero in the 15th century supports the theory that the filler text has been used for centuries.",
         "author": "sazid Ahmed",
         "status": "completed",
-        "image": "img/default.jpg"
+        "image": "img/img-1.jpg"
       },
       {
         "id": "2",
-        "title": "New Angular App",
+        "title": "Angular App",
         "body": "It's difficult to find examples of lorem ipsum in use before Letraset made it popular as a dummy text in the 1960s, although McClintock says he remembers coming across the lorem ipsum passage in a book of old metal type samples. So far he hasn't relocated where he once saw the passage, but the popularity of Cicero in the 15th century supports the theory that the filler text has been used for centuries.",
         "author": "Jhon Doe",
         "status": "pending",
-        "image": "img/default.jpg"
+        "image": "img/img-2.jpg"
       },
       {
         "id": "3",
-        "title": "New Vue App",
+        "title": "Vue App",
         "body": "It's difficult to find examples of lorem ipsum in use before Letraset made it popular as a dummy text in the 1960s, although McClintock says he remembers coming across the lorem ipsum passage in a book of old metal type samples. So far he hasn't relocated where he once saw the passage, but the popularity of Cicero in the 15th century supports the theory that the filler text has been used for centuries.",
         "author": "Jhon Doe",
         "status": "ongoing",
-        "image": "img/default.jpg"
+        "image": "img/img-3.jpg"
+      },
+      {
+        "id": "4",
+        "title": "Svelte App",
+        "body": "It's difficult to find examples of lorem ipsum in use before Letraset made it popular as a dummy text in the 1960s, although McClintock says he remembers coming across the lorem ipsum passage in a book of old metal type samples. So far he hasn't relocated where he once saw the passage, but the popularity of Cicero in the 15th century supports the theory that the filler text has been used for centuries.",
+        "author": "Jenny Doe",
+        "status": "completed",
+        "image": "img/img-4.jpg"
       }
     ]
   }

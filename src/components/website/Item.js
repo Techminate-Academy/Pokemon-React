@@ -2,8 +2,7 @@ import { useState, useEffect } from 'react';
 import { FaEye } from 'react-icons/fa';
 import { Card, Container, Button, Row, Col, Modal } from 'react-bootstrap';
 
-
-function App() {
+function Item() {
   const [show, setShow] = useState(false);
   const [tasks, setTasks] = useState(null);
   const [taskDetails, setTaskDetails] = useState(null);
@@ -65,6 +64,7 @@ function App() {
   }
 
   return (
+    <>
     <Container>
       <Row>
         { error && <div>{ error }</div> }
@@ -72,8 +72,8 @@ function App() {
         {tasks 
         ? 
         tasks.map((task)=>(
-          <Col sm={3} className="p-3" key={task.id}>
-            <Card style={{ width: '18rem' }} bg={changeCardColor(task.status)} onClick={() =>eyeBtn(task.id)}>
+          <Col xs={12} sm={6} md={6} lg={4} xl={3} className="p-3" key={task.id}>
+            <Card className='shadow-lg p-3 mb-5 rounded' style={{ width: '18rem' }} bg={changeCardColor(task.status)} onClick={() =>eyeBtn(task.id)}>
               <Card.Img variant="top" src={task.image} />
               <Card.Body>
               <Card.Title>{task.title}</Card.Title>
@@ -114,7 +114,8 @@ function App() {
       </Modal>
       }
     </Container>
+    </>
   );
 }
 
-export default App;
+export default Item;
