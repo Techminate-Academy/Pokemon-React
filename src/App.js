@@ -1,5 +1,6 @@
 
 import { useState } from 'react';
+import useFetch from './components/composables/useFetch';
 import { FaEye } from 'react-icons/fa';
 import { Card, Container, Button, Row, Col, Modal } from 'react-bootstrap';
 
@@ -9,58 +10,23 @@ function App() {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+   //State Hook
+  const {data: tasks, isLoading, isError} = useFetch('http://localhost:8000/tasks'
+  )
+
   return (
     <Container>
       <Row>
-        <Col sm={3}>
-          <Card style={{ width: '18rem' }} onClick={handleShow}>
+        <Col sm={3} className="p-3">
+          <Card style={{ width: '18rem' }} bg="primary" onClick={handleShow}>
             <Card.Img variant="top" src="img/default.jpg" />
             <Card.Body>
               <Card.Title>Pokemon</Card.Title>
               <Card.Text>
-               Click on More to view in details
               </Card.Text>
-              
-              <Button variant="primary" onClick={handleShow}><FaEye /></Button>
-            </Card.Body>
-          </Card>
-        </Col>
-        <Col sm={3}>
-          <Card style={{ width: '18rem' }} onClick={handleShow}>
-            <Card.Img variant="top" src="img/default.jpg" />
-            <Card.Body>
-              <Card.Title>Pokemon</Card.Title>
-              <Card.Text>
-               Click on More to view in details
-              </Card.Text>
-              
-              <Button variant="primary" onClick={handleShow}><FaEye /></Button>
-            </Card.Body>
-          </Card>
-        </Col>
-        <Col sm={3}>
-          <Card style={{ width: '18rem' }} onClick={handleShow}>
-            <Card.Img variant="top" src="img/default.jpg" />
-            <Card.Body>
-              <Card.Title>Pokemon</Card.Title>
-              <Card.Text>
-               Click on More to view in details
-              </Card.Text>
-              
-              <Button variant="primary" onClick={handleShow}><FaEye /></Button>
-            </Card.Body>
-          </Card>
-        </Col>
-        <Col sm={3}>
-          <Card style={{ width: '18rem' }} onClick={handleShow}>
-            <Card.Img variant="top" src="img/default.jpg" />
-            <Card.Body>
-              <Card.Title>Pokemon</Card.Title>
-              <Card.Text>
-               Click on More to view in details
-              </Card.Text>
-              
-              <Button variant="primary" onClick={handleShow}><FaEye /></Button>
+              <div className="d-flex flex-row-reverse">
+                <Button variant="secondary" onClick={handleShow}><FaEye /></Button>
+              </div>
             </Card.Body>
           </Card>
         </Col>
