@@ -1,8 +1,8 @@
-
 import { useState } from 'react';
 import useFetch from './components/composables/useFetch';
 import { FaEye } from 'react-icons/fa';
 import { Card, Container, Button, Row, Col, Modal } from 'react-bootstrap';
+
 
 function App() {
   const [show, setShow] = useState(false);
@@ -11,25 +11,49 @@ function App() {
   const handleShow = () => setShow(true);
 
    //State Hook
-  const {data: tasks, isLoading, isError} = useFetch('http://localhost:8000/tasks'
-  )
+  const {data: tasks, isLoading, isError} = useFetch('http://localhost:8080/tasks')
+
+  const changeCardColor = (st)=>{
+    if(st === 'completed'){
+      return 'success'
+    }else if(st === 'pending'){
+      return 'warning'
+    }else if(st === 'ongoing'){
+      return 'primary'
+    }else{
+      return 'secondary'
+    }
+  }
+
+  const getTaskById = (id)=>{
+    const {data: task, isLoading, isError} = useFetch('http://localhost:8080/tasks/' + id)
+    console.log(task)
+  }
 
   return (
     <Container>
+      { isError && <div>{ isError }</div> }
+      { isLoading && <div>Loading...</div> }
       <Row>
-        <Col sm={3} className="p-3">
-          <Card style={{ width: '18rem' }} bg="primary" onClick={handleShow}>
-            <Card.Img variant="top" src="img/default.jpg" />
-            <Card.Body>
-              <Card.Title>Pokemon</Card.Title>
+        {tasks 
+        ? 
+        tasks.map((task)=>(
+          <Col sm={3} className="p-3" key={task.id}>
+            <Card style={{ width: '18rem' }} bg={changeCardColor(task.status)}  onClick={handleShow}>
+              <Card.Img variant="top" src={task.image} />
+              <Card.Body>
+              <Card.Title>{task.title}</Card.Title>
               <Card.Text>
+                  {task.author}
               </Card.Text>
               <div className="d-flex flex-row-reverse">
-                <Button variant="secondary" onClick={handleShow}><FaEye /></Button>
+                  <Button variant="secondary" onClick={getTaskById(task.id)}><FaEye /></Button>
               </div>
-            </Card.Body>
-          </Card>
-        </Col>
+              </Card.Body>
+            </Card>
+          </Col>
+      ))
+        : <p>No data found</p>}
       </Row>
 
       {/* modal */}
