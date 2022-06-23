@@ -95,9 +95,9 @@ function Item() {
 
   const boolToText = (param)=>{
     if(param === true){
-      return 'Yes'
+      return 'Si'
     }else{
-      return 'False'
+      return 'No'
     }
   }
 
@@ -137,7 +137,6 @@ function Item() {
       <Modal 
         size="lg"
         className={changeModalColor(docDetails.warning)} 
-       
         show={show} 
         onHide={() =>setShow(false)}
       >
@@ -151,15 +150,15 @@ function Item() {
             <p><b>Emitter : </b> {docDetails.emitter}</p>
             <p><b>Vigency : </b> {docDetails.vigency}</p>
             <p><b>status : </b>{docDetails.status}</p>
-            <p><b>comment : </b> {docDetails.comment}</p>
-          </Col>
-          <Col xs={12} sm={6} md={6} lg={6} xl={6} className="p-3">
             <p><b>Joined at : </b>{formatDate(docDetails.joined_at)}</p>
             <p><b>Rut employee company : </b> {docDetails.rut_employee_company}</p>
+          </Col>
+          <Col xs={12} sm={6} md={6} lg={6} xl={6} className="p-3">
             <p><b>Required : </b> {boolToText(docDetails.is_required)}</p>
             <p><b>Warning : </b> {docDetails.warning}</p>
             <p><b>Created at : </b> {formatDate(docDetails.created_at)}</p>
             <p><b>Updated at : </b> {formatDate(docDetails.updated_at)}</p>
+            <p><b>comment : </b> {docDetails.comment}</p>
             <p><b>PDF file : </b> <Button variant="outline-light" onClick={() =>linkOpenTo(docDetails.file)}>Click here to view</Button></p>
           </Col>
           </Row>
