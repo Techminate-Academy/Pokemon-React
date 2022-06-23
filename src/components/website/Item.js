@@ -1,22 +1,24 @@
 import { useState, useEffect } from 'react';
 import { FaPlus } from 'react-icons/fa';
 import { Card, Container, Button, Row, Col, Modal } from 'react-bootstrap';
+import moment from 'moment';
 import "../component.css";
 
 function Item() {
   const [show, setShow] = useState(false);
-  const [tasks, setTasks] = useState(null);
-  const [taskDetails, setTaskDetails] = useState(null);
+  const [documents, setDocuments] = useState(null);
+  const [docDetails, setdocDetails] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setIsError] = useState(null);
 
   //Hook
   useEffect(()=>{
-    getTaskList()
+    getDocumentList()
   }, []);
 
-  const getTaskList = ()=>{
-    const url = 'http://localhost:8080/tasks'
+  const getDocumentList = ()=>{
+    const url = 'http://45.7.231.78:8000/api/v1/document/list-document/'
+    // const url = 'http://localhost:8080/documents'
     fetch(url)
       .then(res => {
         if(!res.ok){
@@ -25,7 +27,7 @@ function Item() {
         return res.json()
       })
       .then(data =>{
-        setTasks(data)
+        setDocuments(data)
         setIsLoading(false)
         setIsError(null);
       })
@@ -35,16 +37,17 @@ function Item() {
       })
   }
 
-  const eyeBtn = (id)=>{
-    console.log(id)
-    const url = 'http://localhost:8080/tasks/'
-    fetch(url + id)
+  const eyeBtn = (DocumentId)=>{
+    console.log(DocumentId)
+    // const url = 'http://45.7.231.78:8000/api/v1/document/list-document/?DocumentId='
+    const url = 'http://localhost:8080/documents/'
+    fetch(url + DocumentId)
       .then(res => {
         return res.json()
       })
       .then(data =>{
-        console.log(data)
-        setTaskDetails(data)
+        console.log(data[0])
+        setdocDetails(data)
         setShow(true)
       })
       .catch(err=>{
@@ -80,55 +83,81 @@ function Item() {
     }
   }
 
+  const dateTimeParsing = (st)=>{
+    moment.locale('es');
+    var localLocale = moment(st); 
+    return localLocale.format('Do MMMM YYYY');
+  }
+
+  const mailTo = (param)=>{
+    window.location.href = 'mailto:' + param;
+  }
+
   return (
     <>
     <Container>
       <Row>
         { error && <div>{ error }</div> }
         { isLoading && <div>Loading...</div> }
-        {tasks 
+        {documents 
         ? 
-        tasks.map((task)=>(
-          <Col xs={12} sm={6} md={6} lg={4} xl={3} className="p-3" key={task.id}>
-            <Card className='shadow-lg p-3 mb-5 rounded text-white' style={{ width: '18rem' }} bg={changeCardColor(task.status)} onClick={() =>eyeBtn(task.id)}>
-              
+        documents.map((doc)=>(
+          <Col xs={12} sm={6} md={6} lg={4} xl={3} className="p-3" key={doc.DocumentId}>
+            <Card className='shadow-lg p-3 mb-5 rounded text-white' style={{ width: '18rem' }} bg={changeCardColor(doc.warning)} onClick={() =>eyeBtn(doc.DocumentId)}>
               <Card.Body>
-              <Card.Title>{task.title}</Card.Title>
+              <Card.Title>Documento</Card.Title>
               <Card.Text>
-                  {task.author}
+                  <p><b>Rut Employee : </b>{doc.rut_employee}</p>
+                  <p><b>Emited at : </b> {dateTimeParsing(doc.emited_at)}</p>
+                  <p><b>Expires at : </b>{dateTimeParsing(doc.expires_at)}</p>
+                  <p><b>Emitter : </b> {doc.emitter}</p>
+                  <p><b>Vigency : </b> {doc.vigency}</p>
               </Card.Text>
               <div className="d-flex flex-row-reverse">
-                  <Button variant="dark" onClick={() =>eyeBtn(task.id)}><FaPlus /></Button>
+                  <Button variant="dark" onClick={() =>eyeBtn(doc.DocumentId)}><FaPlus /></Button>
               </div>
               </Card.Body>
             </Card>
           </Col>
       ))
-        : <p>No data found</p>}
+        : <p>. . .</p>}
       </Row>
 
       {/* modal */}
-      {taskDetails 
+      {docDetails 
       && 
       <Modal 
         size="lg"
-        className={changeModalColor(taskDetails.status)} 
-        dialogClassName="modal-90w" 
+        className={changeModalColor(docDetails.warning)} 
+       
         show={show} 
         onHide={() =>setShow(false)}
       >
-        <div className="d-flex flex-row-reverse p-1">
-          <Button variant="dark" onClick={() =>setShow(false)}>X</Button>
-        </div>
         <Modal.Body>
-          <h4 className='mt-3'>Title</h4>
-          <p>{taskDetails.title}</p>
-          <h2>Info 1</h2>
-          <p>{taskDetails.body}</p>
-          <h2>Info 2</h2>
-          <p>{taskDetails.body}</p>
-          <h2>Info 3</h2>
-          <p>{taskDetails.body}</p>
+          <h4 className='mt-3'>Employee Details of ID : {docDetails.rut_employee}</h4>
+          <Row>
+          <Col xs={12} sm={6} md={6} lg={6} xl={6} className="p-3">
+            <p><b>Document Id : </b>{docDetails.DocumentId}</p>
+            <p><b>Emited at : </b> {dateTimeParsing(docDetails.emited_at)}</p>
+            <p><b>Expires at : </b>{dateTimeParsing(docDetails.expires_at)}</p>
+            <p><b>Emitter : </b> {docDetails.emitter}</p>
+            <p><b>Vigency : </b> {docDetails.vigency}</p>
+            <p><b>status : </b>{docDetails.status}</p>
+            <p><b>comment : </b> {docDetails.comment}</p>
+          </Col>
+          <Col xs={12} sm={6} md={6} lg={6} xl={6} className="p-3">
+            <p><b>joined_at : </b>{docDetails.joined_at}</p>
+            <p><b>rut_employee_company : </b> {docDetails.rut_employee_company}</p>
+            <p><b>is_required : </b> {docDetails.is_required}</p>
+            <p><b>warning : </b> {docDetails.warning}</p>
+            <p><b>created_at : </b> {docDetails.created_at}</p>
+            <p><b>updated_at : </b> {docDetails.updated_at}</p>
+            <p><b>file : </b> {docDetails.file}</p>
+          </Col>
+          </Row>
+          <div className="d-flex flex-row-reverse p-4">
+            <Button variant="dark" onClick={() =>setShow(false)}>X</Button>
+          </div>
         </Modal.Body>
       </Modal>
       }
