@@ -39,15 +39,15 @@ function Item() {
 
   const eyeBtn = (DocumentId)=>{
     console.log(DocumentId)
-    // const url = 'http://45.7.231.78:8000/api/v1/document/list-document/?DocumentId='
-    const url = 'http://localhost:8080/documents/'
+    const url = 'http://45.7.231.78:8000/api/v1/document/get-document/'
+    // const url = 'http://localhost:8080/documents/'
     fetch(url + DocumentId)
       .then(res => {
         return res.json()
       })
       .then(data =>{
-        console.log(data[0])
-        setdocDetails(data)
+        console.log(data)
+        setdocDetails(data[0])
         setShow(true)
       })
       .catch(err=>{
@@ -83,14 +83,22 @@ function Item() {
     }
   }
 
-  const dateTimeParsing = (st)=>{
+  const formatDate = (st)=>{
     moment.locale('es');
     var localLocale = moment(st); 
     return localLocale.format('Do MMMM YYYY');
   }
 
-  const mailTo = (param)=>{
-    window.location.href = 'mailto:' + param;
+  const linkOpenTo = (param)=>{
+    window.open( param);
+  }
+
+  const boolToText = (param)=>{
+    if(param === true){
+      return 'Yes'
+    }else{
+      return 'False'
+    }
   }
 
   return (
@@ -108,8 +116,8 @@ function Item() {
               <Card.Title>Documento</Card.Title>
               <Card.Text>
                   <p><b>Rut Employee : </b>{doc.rut_employee}</p>
-                  <p><b>Emited at : </b> {dateTimeParsing(doc.emited_at)}</p>
-                  <p><b>Expires at : </b>{dateTimeParsing(doc.expires_at)}</p>
+                  <p><b>Emited at : </b> {formatDate(doc.emited_at)}</p>
+                  <p><b>Expires at : </b>{formatDate(doc.expires_at)}</p>
                   <p><b>Emitter : </b> {doc.emitter}</p>
                   <p><b>Vigency : </b> {doc.vigency}</p>
               </Card.Text>
@@ -138,21 +146,21 @@ function Item() {
           <Row>
           <Col xs={12} sm={6} md={6} lg={6} xl={6} className="p-3">
             <p><b>Document Id : </b>{docDetails.DocumentId}</p>
-            <p><b>Emited at : </b> {dateTimeParsing(docDetails.emited_at)}</p>
-            <p><b>Expires at : </b>{dateTimeParsing(docDetails.expires_at)}</p>
+            <p><b>Emited at : </b> {formatDate(docDetails.emited_at)}</p>
+            <p><b>Expires at : </b>{formatDate(docDetails.expires_at)}</p>
             <p><b>Emitter : </b> {docDetails.emitter}</p>
             <p><b>Vigency : </b> {docDetails.vigency}</p>
             <p><b>status : </b>{docDetails.status}</p>
             <p><b>comment : </b> {docDetails.comment}</p>
           </Col>
           <Col xs={12} sm={6} md={6} lg={6} xl={6} className="p-3">
-            <p><b>joined_at : </b>{docDetails.joined_at}</p>
-            <p><b>rut_employee_company : </b> {docDetails.rut_employee_company}</p>
-            <p><b>is_required : </b> {docDetails.is_required}</p>
-            <p><b>warning : </b> {docDetails.warning}</p>
-            <p><b>created_at : </b> {docDetails.created_at}</p>
-            <p><b>updated_at : </b> {docDetails.updated_at}</p>
-            <p><b>file : </b> {docDetails.file}</p>
+            <p><b>Joined at : </b>{formatDate(docDetails.joined_at)}</p>
+            <p><b>Rut employee company : </b> {docDetails.rut_employee_company}</p>
+            <p><b>Required : </b> {boolToText(docDetails.is_required)}</p>
+            <p><b>Warning : </b> {docDetails.warning}</p>
+            <p><b>Created at : </b> {formatDate(docDetails.created_at)}</p>
+            <p><b>Updated at : </b> {formatDate(docDetails.updated_at)}</p>
+            <p><b>PDF file : </b> <Button variant="outline-light" onClick={() =>linkOpenTo(docDetails.file)}>Click here to view</Button></p>
           </Col>
           </Row>
           <div className="d-flex flex-row-reverse p-4">
