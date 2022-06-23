@@ -5,7 +5,7 @@
         "title": "React App",
         "body": "It's difficult to find examples of lorem ipsum in use before Letraset made it popular as a dummy text in the 1960s, although McClintock says he remembers coming across the lorem ipsum passage in a book of old metal type samples. So far he hasn't relocated where he once saw the passage, but the popularity of Cicero in the 15th century supports the theory that the filler text has been used for centuries.",
         "author": "sazid Ahmed",
-        "status": "completed",
+        "status": "Deshabilitado",
         "image": "img/img-1.jpg"
       },
       {
@@ -13,7 +13,7 @@
         "title": "Angular App",
         "body": "It's difficult to find examples of lorem ipsum in use before Letraset made it popular as a dummy text in the 1960s, although McClintock says he remembers coming across the lorem ipsum passage in a book of old metal type samples. So far he hasn't relocated where he once saw the passage, but the popularity of Cicero in the 15th century supports the theory that the filler text has been used for centuries.",
         "author": "Jhon Doe",
-        "status": "pending",
+        "status": "Peligro",
         "image": "img/img-2.jpg"
       },
       {
@@ -21,7 +21,7 @@
         "title": "Vue App",
         "body": "It's difficult to find examples of lorem ipsum in use before Letraset made it popular as a dummy text in the 1960s, although McClintock says he remembers coming across the lorem ipsum passage in a book of old metal type samples. So far he hasn't relocated where he once saw the passage, but the popularity of Cicero in the 15th century supports the theory that the filler text has been used for centuries.",
         "author": "Jhon Doe",
-        "status": "ongoing",
+        "status": "Cuidado",
         "image": "img/img-3.jpg"
       },
       {
@@ -29,7 +29,7 @@
         "title": "Svelte App",
         "body": "It's difficult to find examples of lorem ipsum in use before Letraset made it popular as a dummy text in the 1960s, although McClintock says he remembers coming across the lorem ipsum passage in a book of old metal type samples. So far he hasn't relocated where he once saw the passage, but the popularity of Cicero in the 15th century supports the theory that the filler text has been used for centuries.",
         "author": "Jenny Doe",
-        "status": "completed",
+        "status": "Bien",
         "image": "img/img-4.jpg"
       }
     ]

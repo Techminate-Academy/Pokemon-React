@@ -1,0 +1,19 @@
+.success_modal .modal-content {
+    background-color: #198754;
+    color: #fff;
+}
+
+.danger_modal .modal-content {
+    background-color: #dc3545;
+    color: #fff;
+}
+  
+.warning_modal .modal-content {
+    background-color: #ffc107;
+    color: #fff;
+}
+  
+.secondary_modal .modal-content {
+    background-color: #6c757d;
+    color: #fff;
+}

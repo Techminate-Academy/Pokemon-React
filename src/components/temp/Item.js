@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { FaPlus } from 'react-icons/fa';
 import { Card, Container, Button, Row, Col, Modal } from 'react-bootstrap';
-import "../component.css";
 
 function Item() {
   const [show, setShow] = useState(false);
@@ -66,20 +65,6 @@ function Item() {
     }
   }
 
-  const changeModalColor = (st)=>{
-    if(st === 'Deshabilitado'){
-      return 'secondary_modal'
-    }else if(st === 'Peligro'){
-      return 'danger_modal'
-    }else if(st === 'Cuidado'){
-      return 'warning_modal'
-    }else if(st === 'Bien'){
-      return 'success_modal'
-    }else{
-      return 'primary'
-    }
-  }
-
   return (
     <>
     <Container>
@@ -90,7 +75,7 @@ function Item() {
         ? 
         tasks.map((task)=>(
           <Col xs={12} sm={6} md={6} lg={4} xl={3} className="p-3" key={task.id}>
-            <Card className='shadow-lg p-3 mb-5 rounded text-white' style={{ width: '18rem' }} bg={changeCardColor(task.status)} onClick={() =>eyeBtn(task.id)}>
+            <Card className='shadow-lg p-3 mb-5 rounded' style={{ width: '18rem' }} bg={changeCardColor(task.status)} onClick={() =>eyeBtn(task.id)}>
               
               <Card.Body>
               <Card.Title>{task.title}</Card.Title>
@@ -110,26 +95,21 @@ function Item() {
       {/* modal */}
       {taskDetails 
       && 
-      <Modal 
-        size="lg"
-        className={changeModalColor(taskDetails.status)} 
-        dialogClassName="modal-90w" 
-        show={show} 
-        onHide={() =>setShow(false)}
-      >
-        <div className="d-flex flex-row-reverse p-1">
-          <Button variant="dark" onClick={() =>setShow(false)}>X</Button>
-        </div>
+      <Modal className="primary" show={show} onHide={() =>setShow(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>{taskDetails.title} Details</Modal.Title>
+        </Modal.Header>
         <Modal.Body>
           <h4 className='mt-3'>Title</h4>
           <p>{taskDetails.title}</p>
-          <h2>Info 1</h2>
-          <p>{taskDetails.body}</p>
-          <h2>Info 2</h2>
-          <p>{taskDetails.body}</p>
-          <h2>Info 3</h2>
+          <h2>Description</h2>
           <p>{taskDetails.body}</p>
         </Modal.Body>
+        <Modal.Footer>
+          <Button variant="danger" onClick={() =>setShow(false)}>
+            Close
+          </Button>
+        </Modal.Footer>
       </Modal>
       }
     </Container>
