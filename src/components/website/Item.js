@@ -1,15 +1,18 @@
 import { useState, useEffect } from 'react';
 import { FaPlus } from 'react-icons/fa';
-import { Card, Container, Button, Row, Col, Modal } from 'react-bootstrap';
+import { Card, Container, Button, Row, Col, Modal, Form } from 'react-bootstrap';
 import moment from 'moment';
 import "../component.css";
 
 function Item() {
   const [show, setShow] = useState(false);
-  const [documents, setDocuments] = useState(null);
-  const [docDetails, setdocDetails] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setIsError] = useState(null);
+  const [documents, setDocuments] = useState(null);
+  const [docDetails, setdocDetails] = useState(null);
+  const [docSortBy, setDocSortBy] = useState('');
+  const [docFilterBy, setDocFilterBy] = useState(null);
+  const [docSearchBy, setDocSearchBy] = useState('');
 
   //Hook
   useEffect(()=>{
@@ -101,9 +104,66 @@ function Item() {
     }
   }
 
+  const sortTheData = ()=>{
+    documents.sort(function (x, y) {
+      return x.DocumentId - y.DocumentId;
+    });
+    console.table(documents);
+  }
+
   return (
     <>
     <Container>
+      <Row>
+        <Col xs={12} sm={12} md={4} lg={4} xl={4} className="p-3">
+        <Form>
+          <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Label>Search Documento</Form.Label>
+            <Form.Control 
+            type="text" 
+            placeholder="Type here . . ."
+            value={docSearchBy}
+            onChange={(e) => setDocSearchBy(e.target.value)}
+           />
+          </Form.Group>
+        </Form>
+        </Col>
+        <Col xs={12} sm={12} md={4} lg={4} xl={4} className="p-3">
+        <Form>
+          <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Label>Sort Documento</Form.Label>
+            <Form.Select 
+              aria-label="Default select example"
+              value={docSortBy}
+              onChange={(e) => setDocSortBy(e.target.value)}
+            >
+              <option>Click here to select</option>
+              <option value="DocumentId">Document ID</option>
+              <option value="created_at">Created at</option>
+              <option value="updated_at">Updated at</option>
+            </Form.Select>
+          </Form.Group>
+        </Form>
+        </Col>
+        <Col xs={12} sm={12} md={4} lg={4} xl={4} className="p-3">
+        <Form>
+          <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Label>Filter Documento</Form.Label>
+            <Form.Select 
+              aria-label="Default select example"
+              value={docFilterBy}
+              onChange={(e) => setDocFilterBy(e.target.value)}
+            >
+              <option>Click here to select</option>
+              <option value="1">One</option>
+              <option value="2">Two</option>
+              <option value="3">Three</option>
+            </Form.Select>
+          </Form.Group>
+        </Form>
+        </Col>
+      </Row>
+      <Row><Button variant="dark" onClick={() =>sortTheData()}>Test</Button></Row>
       <Row>
         { error && <div>{ error }</div> }
         { isLoading && <div>Loading...</div> }
