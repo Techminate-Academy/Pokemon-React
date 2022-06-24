@@ -11,7 +11,7 @@ function Item() {
   const [documents, setDocuments] = useState(null);
   const [docDetails, setdocDetails] = useState(null);
   const [docSortBy, setDocSortBy] = useState('');
-  const [docFilterBy, setDocFilterBy] = useState(null);
+  const [docFilterBy, setDocFilterBy] = useState('');
   const [docSearchBy, setDocSearchBy] = useState('');
 
   //Hook
@@ -104,29 +104,22 @@ function Item() {
     }
   }
 
-  const sortTheData = ()=>{
-    documents.sort(function (x, y) {
-      return x.DocumentId - y.DocumentId;
-    });
-    console.table(documents);
-  }
-
   return (
     <>
     <Container>
       <Row>
         <Col xs={12} sm={12} md={4} lg={4} xl={4} className="p-3">
-        <Form>
-          <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label>Search Documento</Form.Label>
-            <Form.Control 
-            type="text" 
-            placeholder="Type here . . ."
-            value={docSearchBy}
-            onChange={(e) => setDocSearchBy(e.target.value)}
-           />
-          </Form.Group>
-        </Form>
+          <Form>
+            <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Label>Search Documento</Form.Label>
+              <Form.Control 
+              type="text" 
+              placeholder="Type here . . ."
+              value={docSearchBy}
+              onChange={(e) => setDocSearchBy(e.target.value)}
+            />
+            </Form.Group>
+          </Form>
         </Col>
         <Col xs={12} sm={12} md={4} lg={4} xl={4} className="p-3">
         <Form>
@@ -140,7 +133,7 @@ function Item() {
               <option>Click here to select</option>
               <option value="DocumentId">Document ID</option>
               <option value="created_at">Created at</option>
-              <option value="updated_at">Updated at</option>
+              <option value="warning">Warning</option>
             </Form.Select>
           </Form.Group>
         </Form>
@@ -163,22 +156,57 @@ function Item() {
         </Form>
         </Col>
       </Row>
-      <Row><Button variant="dark" onClick={() =>sortTheData()}>Test</Button></Row>
+      <Row>
+        SortBy : {docSortBy}- Filter By :{docFilterBy}
+      </Row>
       <Row>
         { error && <div>{ error }</div> }
         { isLoading && <div>Loading...</div> }
         {documents 
         ? 
-        documents.map((doc)=>(
+        documents
+        .filter(doc => {
+          if (docSearchBy === '') {
+            return doc;
+          } else if (doc.rut_employee.toString().toLowerCase().includes(docSearchBy.toLowerCase())) {
+            return doc;
+          }else if (doc.emitter.toString().toLowerCase().includes(docSearchBy.toLowerCase())) {
+            return doc;
+          }else if (doc.vigency.toString().toLowerCase().includes(docSearchBy.toLowerCase())) {
+            return doc;
+          }else if (doc.status.toString().toLowerCase().includes(docSearchBy.toLowerCase())) {
+            return doc;
+          }else if (doc.rut_employee_company.toString().toLowerCase().includes(docSearchBy.toLowerCase())) {
+            return doc;
+          }
+        })
+        .sort(function (x, y) {
+          if(docSortBy === 'DocumentId'){
+            let a = x.DocumentId.toString(),
+            b = y.DocumentId.toString();
+            return a === b ? 0 : a > b ? 1 : -1;
+          }else if(docSortBy === 'warning'){
+            let a = x.warning.toUpperCase(),
+            b = y.warning.toUpperCase();
+            return a === b ? 0 : a > b ? 1 : -1;
+          }
+          else if(docSortBy === 'created_at'){
+            let a = new Date(x.created_at);
+            let b = new Date(y.created_at);
+            return a === b ? 0 : a > b ? 1 : -1;
+          }
+        })
+        .map((doc)=>(
           <Col xs={12} sm={6} md={6} lg={4} xl={3} className="p-3" key={doc.DocumentId}>
-            <Card className='shadow-lg p-3 mb-5 rounded text-white' style={{ width: '18rem' }} bg={changeCardColor(doc.warning)} onClick={() =>eyeBtn(doc.DocumentId)}>
+            <Card className='shadow-lg p-3 mb-5 rounded text-white' style={{ width: '18rem' }} bg={changeCardColor(doc.warning)}>
               <Card.Body>
-              <Card.Title>Documento</Card.Title>
+              <Card.Title>Documento Id : {doc.DocumentId}</Card.Title>
               <Card.Text>
                   <p><b>Rut Employee : </b>{doc.rut_employee}</p>
                   <p><b>Emited at : </b> {formatDate(doc.emited_at)}</p>
-                  <p><b>Expires at : </b>{formatDate(doc.expires_at)}</p>
                   <p><b>Emitter : </b> {doc.emitter}</p>
+                  <p><b>Created at : </b>{formatDate(doc.created_at)}</p>
+                  <p><b>Expires at : </b>{formatDate(doc.expires_at)}</p>
                   <p><b>Vigency : </b> {doc.vigency}</p>
               </Card.Text>
               <div className="d-flex flex-row-reverse">
