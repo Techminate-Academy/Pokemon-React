@@ -15,7 +15,7 @@ function Item() {
 
   //Filter
   const [docFilterBy, setDocFilterBy] = useState('');
-  const warningBtn = [...new Set(documents.map((Val) => Val.warning))];
+  // const menuItems = [...new Set(documents.map((Val) => Val.warning))];
   //Hook
   useEffect(()=>{
     getDocumentList()
@@ -147,21 +147,35 @@ function Item() {
           </Form.Group>
         </Form>
         </Col>
+        <Col xs={12} sm={12} md={4} lg={4} xl={4} className="p-3">
+        <Form>
+          <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Label>Filter Documento</Form.Label>
+            <Form.Select 
+              aria-label="Default select example"
+              value={docFilterBy}
+              onChange={(e) => setDocFilterBy(e.target.value)}
+            >
+              <option>Click here to select</option>
+              <option value="Bien">Bien</option>
+              <option value="Deshabilitado">Deshabilitado</option>
+              <option value="Peligro">Peligro</option>
+              <option value="Cuidado">Cuidado</option>
+              <option value="">All</option>
+            </Form.Select>
+          </Form.Group>
+        </Form>
+        </Col>
       </Row>
       <Row>
-      <Col xs={12} sm={12} md={6} lg={4} xl={4} className="p-3">
-        <h5>Filter by Warning : {docFilterBy}</h5>
-
-        {warningBtn.map((Val, id) => {
-          return (
-            <Badge pill bg="dark" role="button" className='m-1'
-            onClick={() => setDocFilterBy(Val)}
-            key={id}
-            >{Val}
-            </Badge>
-          );
-        })}
-        <Badge pill bg="dark" role="button" onClick={() => setDocFilterBy('')}>All</Badge>{' '}
+        SortBy : {docSortBy}- Filter By :{docFilterBy}
+      </Row>
+      <Row>
+      <Col xs={12} sm={12} md={6} lg={3} xl={3} className="p-3">
+        <h5>Filter by Warning</h5>
+        <Badge pill bg="dark" onClick={() => filterItem("Deshabilitado")}>Deshabilitado</Badge>{' '}
+        <Badge pill bg="dark" onClick={() => filterItem("Bien")}>Bien</Badge>{' '}
+        <Badge pill bg="dark" onClick={() => getDocumentList()}>Reset</Badge>{' '}
       </Col>
       </Row>
       <Row>
@@ -171,32 +185,26 @@ function Item() {
         ? 
         documents
         .filter(doc => {
-          if (docFilterBy === '' && docSearchBy === '') {
+          if (docSearchBy === '') {
+            return doc;
+          } else if (doc.rut_employee.toString().toLowerCase().includes(docSearchBy.toLowerCase())) {
+            return doc;
+          }else if (doc.emitter.toString().toLowerCase().includes(docSearchBy.toLowerCase())) {
+            return doc;
+          }else if (doc.vigency.toString().toLowerCase().includes(docSearchBy.toLowerCase())) {
+            return doc;
+          }else if (doc.status.toString().toLowerCase().includes(docSearchBy.toLowerCase())) {
+            return doc;
+          }else if (doc.rut_employee_company.toString().toLowerCase().includes(docSearchBy.toLowerCase())) {
+            return doc;
+          }else if (doc.warning.toString().toLowerCase().includes(docSearchBy.toLowerCase())) {
             return doc;
           }
 
-          if (docFilterBy !== ''){
-            if (doc.warning.toString().toLowerCase().includes(docFilterBy.toLowerCase())) {
-              return doc;
-            }
-          }
-
-          if (docSearchBy !== ''){
-            if (doc.rut_employee.toString().toLowerCase().includes(docSearchBy.toLowerCase())) {
-              return doc;
-            }else if (doc.rut_employee.toString().toLowerCase().includes(docSearchBy.toLowerCase())) {
-              return doc;
-            }else if (doc.emitter.toString().toLowerCase().includes(docSearchBy.toLowerCase())) {
-              return doc;
-            }else if (doc.vigency.toString().toLowerCase().includes(docSearchBy.toLowerCase())) {
-              return doc;
-            }else if (doc.status.toString().toLowerCase().includes(docSearchBy.toLowerCase())) {
-              return doc;
-            }else if (doc.rut_employee_company.toString().toLowerCase().includes(docSearchBy.toLowerCase())) {
-              return doc;
-            }else if (doc.warning.toString().toLowerCase().includes(docSearchBy.toLowerCase())) {
-              return doc;
-            }
+          if (docFilterBy === '') {
+            return doc;
+          } else if (doc.warning.toString().toLowerCase().includes(docFilterBy.toLowerCase())) {
+            return doc;
           }
           
         })
