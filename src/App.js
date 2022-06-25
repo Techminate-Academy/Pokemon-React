@@ -1,14 +1,14 @@
 
 import { Container } from 'react-bootstrap';
 import Topnav from './components/website/Navbar';
-import Item from './components/website/Item';
+import Document from './components/website/Document';
 
 function App() {
   return (
     <>
     <Topnav />
     <Container>
-      <Item />
+      <Document />
     </Container>
     </>
   );

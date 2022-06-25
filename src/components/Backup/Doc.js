@@ -13,9 +13,13 @@ function Item() {
   const [docSortBy, setDocSortBy] = useState('');
   const [docSearchBy, setDocSearchBy] = useState('');
 
-  //Filter
+  //Filter const
   const [docFilterBy, setDocFilterBy] = useState('');
-  const warningBtn = [...new Set(documents.map((Val) => Val.warning))];
+  const [warningBtn, setWarningBtn] = useState(null);
+  const [statusBtn, setStatusBtn] = useState(null);
+  const [emitterBtn, setEmitterBtn] = useState(null);
+  
+
   //Hook
   useEffect(()=>{
     getDocumentList()
@@ -33,6 +37,9 @@ function Item() {
       })
       .then(data =>{
         setDocuments(data)
+        setWarningBtn([...new Set(data.map((Val) => Val.warning))])
+        setStatusBtn([...new Set(data.map((Val) => Val.status))])
+        setEmitterBtn([...new Set(data.map((Val) => Val.emitter))])
         setIsLoading(false)
         setIsError(null);
       })
@@ -106,12 +113,12 @@ function Item() {
     }
   }
 
-  const filterItem = (curcat) => {
-    const newItem = documents.filter((newVal) => {
-      return newVal.warning === curcat;
-    });
-    setDocuments(newItem);
-  };
+  // const filterItem = (curcat) => {
+  //   const newItem = documents.filter((newVal) => {
+  //     return newVal.warning === curcat;
+  //   });
+  //   setDocuments(newItem);
+  // };
 
   return (
     <>
@@ -149,20 +156,46 @@ function Item() {
         </Col>
       </Row>
       <Row>
-      <Col xs={12} sm={12} md={6} lg={4} xl={4} className="p-3">
-        <h5>Filter by Warning : {docFilterBy}</h5>
-
-        {warningBtn.map((Val, id) => {
-          return (
-            <Badge pill bg="dark" role="button" className='m-1'
-            onClick={() => setDocFilterBy(Val)}
-            key={id}
-            >{Val}
-            </Badge>
-          );
-        })}
-        <Badge pill bg="dark" role="button" onClick={() => setDocFilterBy('')}>All</Badge>{' '}
-      </Col>
+        <Col xs={12} sm={12} md={6} lg={3} xl={3} className="p-3">
+          <h5>Filter by Warning :</h5>
+          {warningBtn && warningBtn.map((Val, id) => {
+            return (
+              <Badge pill bg="primary" role="button" className='m-1'
+              onClick={() => setDocFilterBy(Val)}
+              key={id}
+              >{Val}
+              </Badge>
+            );
+          })}
+        </Col>
+        <Col xs={12} sm={12} md={6} lg={3} xl={3} className="p-3">
+          <h5>Filter by Status :</h5>
+          {statusBtn && statusBtn.map((Val, id) => {
+            return (
+              <Badge pill bg="primary" role="button" className='m-1'
+              onClick={() => setDocFilterBy(Val)}
+              key={id}
+              >{Val}
+              </Badge>
+            );
+          })}
+        </Col>
+        <Col xs={12} sm={12} md={6} lg={3} xl={3} className="p-3">
+          <h5>Filter by Emitter :</h5>
+          {emitterBtn && emitterBtn.map((Val, id) => {
+            return (
+              <Badge pill bg="primary" role="button" className='m-1'
+              onClick={() => setDocFilterBy(Val)}
+              key={id}
+              >{Val}
+              </Badge>
+            );
+          })}
+        </Col>
+        <Col xs={12} sm={12} md={6} lg={3} xl={3} className="p-3">
+          <h5>Remove applied filter :</h5>
+          <Badge pill bg="success" role="button" onClick={() => setDocFilterBy('')}>Confirm</Badge>{' '}
+        </Col>
       </Row>
       <Row>
         { error && <div>{ error }</div> }
@@ -177,6 +210,10 @@ function Item() {
 
           if (docFilterBy !== ''){
             if (doc.warning.toString().toLowerCase().includes(docFilterBy.toLowerCase())) {
+              return doc;
+            }else if (doc.status.toString().toLowerCase().includes(docFilterBy.toLowerCase())) {
+              return doc;
+            }else if (doc.emitter.toString().toLowerCase().includes(docFilterBy.toLowerCase())) {
               return doc;
             }
           }
