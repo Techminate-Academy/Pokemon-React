@@ -241,7 +241,7 @@ function Item() {
                   return doc;
                 }
               }
-              
+              return null;
             })
             .sort(function (x, y) {
               if(docSortBy === 'DocumentId'){
@@ -258,6 +258,7 @@ function Item() {
                 let b = new Date(y.created_at);
                 return a === b ? 0 : a > b ? 1 : -1;
               }
+              return null;
             })
             .map((doc)=>(
               <Col xs={12} sm={12} md={6} lg={6} xl={4} className="p-3" key={doc.DocumentId}>
@@ -265,12 +266,12 @@ function Item() {
                   <Card.Body>
                   <Card.Title>Documento Id : {doc.DocumentId}</Card.Title>
                   <Card.Text>
-                      <p><b>Rut Employee : </b>{doc.rut_employee}</p>
-                      <p><b>Emited at : </b> {formatDate(doc.emited_at)}</p>
-                      <p><b>Emitter : </b> {doc.emitter}</p>
-                      <p><b>Created at : </b>{formatDate(doc.created_at)}</p>
-                      <p><b>Expires at : </b>{formatDate(doc.expires_at)}</p>
-                      <p><b>Vigency : </b> {doc.vigency}</p>
+                      <span className="d-block p-2"><b>Rut Employee : </b>{doc.rut_employee}</span>
+                      <span className="d-block p-2"><b>Emited at : </b> {formatDate(doc.emited_at)}</span>
+                      <span className="d-block p-2"><b>Emitter : </b> {doc.emitter}</span>
+                      <span className="d-block p-2"><b>Created at : </b>{formatDate(doc.created_at)}</span>
+                      <span className="d-block p-2"><b>Expires at : </b>{formatDate(doc.expires_at)}</span>
+                      <span className="d-block p-2"><b>Vigency : </b> {doc.vigency}</span>
                   </Card.Text>
                   <div className="d-flex flex-row-reverse">
                       <Button variant="dark" onClick={() =>eyeBtn(doc.DocumentId)}><FaPlus /></Button>
@@ -295,22 +296,23 @@ function Item() {
               <h4 className='mt-3'>Employee Details of ID : {docDetails.rut_employee}</h4>
               <Row>
               <Col xs={12} sm={6} md={6} lg={6} xl={6} className="p-3">
-                <p><b>Document Id : </b>{docDetails.DocumentId}</p>
-                <p><b>Emited at : </b> {formatDate(docDetails.emited_at)}</p>
-                <p><b>Expires at : </b>{formatDate(docDetails.expires_at)}</p>
-                <p><b>Emitter : </b> {docDetails.emitter}</p>
-                <p><b>Vigency : </b> {docDetails.vigency}</p>
-                <p><b>status : </b>{docDetails.status}</p>
-                <p><b>Joined at : </b>{formatDate(docDetails.joined_at)}</p>
+                <span className="d-block p-2"><b>Document Id : </b>{docDetails.DocumentId}</span>
+                <span className="d-block p-2"><b>Emited at : </b> {formatDate(docDetails.emited_at)}</span>
+                <span className="d-block p-2"><b>Expires at : </b>{formatDate(docDetails.expires_at)}</span>
+                <span className="d-block p-2"><b>Emitter : </b> {docDetails.emitter}</span>
+                <span className="d-block p-2"><b>Vigency : </b> {docDetails.vigency}</span>
+                <span className="d-block p-2"><b>status : </b>{docDetails.status}</span>
+                <span className="d-block p-2"><b>Joined at : </b>{formatDate(docDetails.joined_at)}</span>
               </Col>
               <Col xs={12} sm={6} md={6} lg={6} xl={6} className="p-3">
-                <p><b>Rut employee company : </b> {docDetails.rut_employee_company}</p>
-                <p><b>Required : </b> {boolToText(docDetails.is_required)}</p>
-                <p><b>Warning : </b> {docDetails.warning}</p>
-                <p><b>Created at : </b> {formatDate(docDetails.created_at)}</p>
-                <p><b>Updated at : </b> {formatDate(docDetails.updated_at)}</p>
-                <p><b>comment : </b> {docDetails.comment}</p>
-                <p><b>PDF file : </b> <Button variant="outline-light" onClick={() =>linkOpenTo(docDetails.file)}>Click here to view</Button></p>
+                <span className="d-block p-2"><b>Rut employee company : </b> {docDetails.rut_employee_company}</span>
+                <span className="d-block p-2"><b>Required : </b> {boolToText(docDetails.is_required)}</span>
+                <span className="d-block p-2"><b>Warning : </b> {docDetails.warning}</span>
+                <span className="d-block p-2"><b>Created at : </b> {formatDate(docDetails.created_at)}</span>
+                <span className="d-block p-2"><b>Updated at : </b> {formatDate(docDetails.updated_at)}</span>
+                <span className="d-block p-2"><b>comment : </b> {docDetails.comment}</span>
+                <span className="d-block p-2"><b>PDF file : </b> <Button variant="outline-light" onClick={() =>linkOpenTo(docDetails.file)}>Click here to view</Button></span>
+
               </Col>
               </Row>
               <div className="d-flex flex-row-reverse p-4">
@@ -321,8 +323,6 @@ function Item() {
           }
         </Col>
       </Row>
-     
-     
     </Container>
     </>
   );

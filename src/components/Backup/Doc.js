@@ -18,8 +18,6 @@ function Item() {
   const [warningBtn, setWarningBtn] = useState(null);
   const [statusBtn, setStatusBtn] = useState(null);
   const [emitterBtn, setEmitterBtn] = useState(null);
-  
-
   //Hook
   useEffect(()=>{
     getDocumentList()
@@ -124,195 +122,205 @@ function Item() {
     <>
     <Container>
       <Row>
-        <Col xs={12} sm={12} md={4} lg={4} xl={4} className="p-3">
-          <Form>
-            <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label>Search Documento</Form.Label>
-              <Form.Control 
-              type="text" 
-              placeholder="Type here . . ."
-              value={docSearchBy}
-              onChange={(e) => setDocSearchBy(e.target.value)}
-            />
-            </Form.Group>
-          </Form>
-        </Col>
-        <Col xs={12} sm={12} md={4} lg={4} xl={4} className="p-3">
-        <Form>
-          <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label>Sort Documento</Form.Label>
-            <Form.Select 
-              aria-label="Default select example"
-              value={docSortBy}
-              onChange={(e) => setDocSortBy(e.target.value)}
-            >
-              <option>Click here to select</option>
-              <option value="DocumentId">Document ID</option>
-              <option value="created_at">Created Date</option>
-              <option value="warning">Warning</option>
-            </Form.Select>
-          </Form.Group>
-        </Form>
-        </Col>
-      </Row>
-      <Row>
-        <Col xs={12} sm={12} md={6} lg={3} xl={3} className="p-3">
-          <h5>Filter by Warning :</h5>
-          {warningBtn && warningBtn.map((Val, id) => {
-            return (
-              <Badge pill bg="primary" role="button" className='m-1'
-              onClick={() => setDocFilterBy(Val)}
-              key={id}
-              >{Val}
-              </Badge>
-            );
-          })}
-        </Col>
-        <Col xs={12} sm={12} md={6} lg={3} xl={3} className="p-3">
-          <h5>Filter by Status :</h5>
-          {statusBtn && statusBtn.map((Val, id) => {
-            return (
-              <Badge pill bg="primary" role="button" className='m-1'
-              onClick={() => setDocFilterBy(Val)}
-              key={id}
-              >{Val}
-              </Badge>
-            );
-          })}
-        </Col>
-        <Col xs={12} sm={12} md={6} lg={3} xl={3} className="p-3">
-          <h5>Filter by Emitter :</h5>
-          {emitterBtn && emitterBtn.map((Val, id) => {
-            return (
-              <Badge pill bg="primary" role="button" className='m-1'
-              onClick={() => setDocFilterBy(Val)}
-              key={id}
-              >{Val}
-              </Badge>
-            );
-          })}
-        </Col>
-        <Col xs={12} sm={12} md={6} lg={3} xl={3} className="p-3">
-          <h5>Remove applied filter :</h5>
-          <Badge pill bg="success" role="button" onClick={() => setDocFilterBy('')}>Confirm</Badge>{' '}
-        </Col>
-      </Row>
-      <Row>
-        { error && <div>{ error }</div> }
-        { isLoading && <div>Loading...</div> }
-        {documents 
-        ? 
-        documents
-        .filter(doc => {
-          if (docFilterBy === '' && docSearchBy === '') {
-            return doc;
-          }
-
-          if (docFilterBy !== ''){
-            if (doc.warning.toString().toLowerCase().includes(docFilterBy.toLowerCase())) {
-              return doc;
-            }else if (doc.status.toString().toLowerCase().includes(docFilterBy.toLowerCase())) {
-              return doc;
-            }else if (doc.emitter.toString().toLowerCase().includes(docFilterBy.toLowerCase())) {
-              return doc;
-            }
-          }
-
-          if (docSearchBy !== ''){
-            if (doc.rut_employee.toString().toLowerCase().includes(docSearchBy.toLowerCase())) {
-              return doc;
-            }else if (doc.rut_employee.toString().toLowerCase().includes(docSearchBy.toLowerCase())) {
-              return doc;
-            }else if (doc.emitter.toString().toLowerCase().includes(docSearchBy.toLowerCase())) {
-              return doc;
-            }else if (doc.vigency.toString().toLowerCase().includes(docSearchBy.toLowerCase())) {
-              return doc;
-            }else if (doc.status.toString().toLowerCase().includes(docSearchBy.toLowerCase())) {
-              return doc;
-            }else if (doc.rut_employee_company.toString().toLowerCase().includes(docSearchBy.toLowerCase())) {
-              return doc;
-            }else if (doc.warning.toString().toLowerCase().includes(docSearchBy.toLowerCase())) {
-              return doc;
-            }
-          }
-          
-        })
-        .sort(function (x, y) {
-          if(docSortBy === 'DocumentId'){
-            let a = x.DocumentId.toString(),
-            b = y.DocumentId.toString();
-            return a === b ? 0 : a > b ? 1 : -1;
-          }else if(docSortBy === 'warning'){
-            let a = x.warning.toUpperCase(),
-            b = y.warning.toUpperCase();
-            return a === b ? 0 : a > b ? 1 : -1;
-          }
-          else if(docSortBy === 'created_at'){
-            let a = new Date(x.created_at);
-            let b = new Date(y.created_at);
-            return a === b ? 0 : a > b ? 1 : -1;
-          }
-        })
-        .map((doc)=>(
-          <Col xs={12} sm={6} md={6} lg={4} xl={3} className="p-3" key={doc.DocumentId}>
-            <Card className='shadow-lg p-3 mb-5 rounded text-white' style={{ width: '18rem' }} bg={changeCardColor(doc.warning)}>
-              <Card.Body>
-              <Card.Title>Documento Id : {doc.DocumentId}</Card.Title>
-              <Card.Text>
-                  <p><b>Rut Employee : </b>{doc.rut_employee}</p>
-                  <p><b>Emited at : </b> {formatDate(doc.emited_at)}</p>
-                  <p><b>Emitter : </b> {doc.emitter}</p>
-                  <p><b>Created at : </b>{formatDate(doc.created_at)}</p>
-                  <p><b>Expires at : </b>{formatDate(doc.expires_at)}</p>
-                  <p><b>Vigency : </b> {doc.vigency}</p>
-              </Card.Text>
-              <div className="d-flex flex-row-reverse">
-                  <Button variant="dark" onClick={() =>eyeBtn(doc.DocumentId)}><FaPlus /></Button>
-              </div>
-              </Card.Body>
-            </Card>
-          </Col>
-      ))
-        : <p>. . .</p>}
-      </Row>
-
-      {/* modal */}
-      {docDetails 
-      && 
-      <Modal 
-        size="lg"
-        className={changeModalColor(docDetails.warning)} 
-        show={show} 
-        onHide={() =>setShow(false)}
-      >
-        <Modal.Body>
-          <h4 className='mt-3'>Employee Details of ID : {docDetails.rut_employee}</h4>
+        <Col xs={12} sm={12} md={5} lg={3} xl={3} className="p-2">
           <Row>
-          <Col xs={12} sm={6} md={6} lg={6} xl={6} className="p-3">
-            <p><b>Document Id : </b>{docDetails.DocumentId}</p>
-            <p><b>Emited at : </b> {formatDate(docDetails.emited_at)}</p>
-            <p><b>Expires at : </b>{formatDate(docDetails.expires_at)}</p>
-            <p><b>Emitter : </b> {docDetails.emitter}</p>
-            <p><b>Vigency : </b> {docDetails.vigency}</p>
-            <p><b>status : </b>{docDetails.status}</p>
-            <p><b>Joined at : </b>{formatDate(docDetails.joined_at)}</p>
-          </Col>
-          <Col xs={12} sm={6} md={6} lg={6} xl={6} className="p-3">
-            <p><b>Rut employee company : </b> {docDetails.rut_employee_company}</p>
-            <p><b>Required : </b> {boolToText(docDetails.is_required)}</p>
-            <p><b>Warning : </b> {docDetails.warning}</p>
-            <p><b>Created at : </b> {formatDate(docDetails.created_at)}</p>
-            <p><b>Updated at : </b> {formatDate(docDetails.updated_at)}</p>
-            <p><b>comment : </b> {docDetails.comment}</p>
-            <p><b>PDF file : </b> <Button variant="outline-light" onClick={() =>linkOpenTo(docDetails.file)}>Click here to view</Button></p>
-          </Col>
+            <Col xs={12} sm={12} md={12} lg={12} xl={12} className="p-3">
+              <h6>Search :</h6>
+              <Form>
+                <Form.Group className="mb-3" controlId="formBasicEmail">
+                  <Form.Control 
+                  type="text" 
+                  placeholder="Type here . . ."
+                  value={docSearchBy}
+                  onChange={(e) => setDocSearchBy(e.target.value)}
+                />
+                </Form.Group>
+              </Form>
+            </Col>
+            <Col xs={12} sm={12} md={12} lg={12} xl={12} className="p-3">
+              <h6>Sort By :</h6>
+              <Form>
+                <Form.Group className="mb-3" controlId="formBasicEmail">
+                  <Form.Select 
+                    aria-label="Default select example"
+                    value={docSortBy}
+                    onChange={(e) => setDocSortBy(e.target.value)}
+                  >
+                    <option>Click here to select</option>
+                    <option value="DocumentId">Document ID</option>
+                    <option value="created_at">Created Date</option>
+                    <option value="warning">Warning</option>
+                  </Form.Select>
+                </Form.Group>
+              </Form>
+            </Col>
           </Row>
-          <div className="d-flex flex-row-reverse p-4">
-            <Button variant="dark" onClick={() =>setShow(false)}>X</Button>
-          </div>
-        </Modal.Body>
-      </Modal>
-      }
+          <Row>
+            <h6>Filter by :</h6>
+            <Col xs={12} sm={12} md={12} lg={12} xl={12} className="mt-1">
+              <p>Warning :</p>
+              {warningBtn && warningBtn.map((Val, id) => {
+                return (
+                  <Badge pill bg="primary" role="button" className='m-1'
+                  onClick={() => setDocFilterBy(Val)}
+                  key={id}
+                  >{Val}
+                  </Badge>
+                );
+              })}
+            </Col>
+            <Col xs={12} sm={12} md={12} lg={12} xl={12} className="mt-3">
+              <p>Status :</p>
+              {statusBtn && statusBtn.map((Val, id) => {
+                return (
+                  <Badge pill bg="primary" role="button" className='m-1'
+                  onClick={() => setDocFilterBy(Val)}
+                  key={id}
+                  >{Val}
+                  </Badge>
+                );
+              })}
+            </Col>
+            <Col xs={12} sm={12} md={12} lg={12} xl={12} className="mt-3">
+              <p>Emitter :</p>
+              {emitterBtn && emitterBtn.map((Val, id) => {
+                return (
+                  <Badge pill bg="primary" role="button" className='m-1'
+                  onClick={() => setDocFilterBy(Val)}
+                  key={id}
+                  >{Val}
+                  </Badge>
+                );
+              })}
+            </Col>
+            <Col xs={12} sm={12} md={12} lg={12} xl={12} className="mt-3">
+              <p>Remove applied filter :</p>
+              <Button variant="dark" className="btn btn-sm" onClick={() => setDocFilterBy('')}>Remove</Button>
+            </Col>
+          </Row>
+        </Col>
+        <Col xs={12} sm={12} md={7} lg={9} xl={9} className="p-2">
+           {/* card row */}
+          <Row>
+            { error && <div>{ error }</div> }
+            { isLoading && <div>Loading...</div> }
+            {documents 
+            ? 
+            documents
+            .filter(doc => {
+              if (docFilterBy === '' && docSearchBy === '') {
+                return doc;
+              }
+
+              if (docFilterBy !== ''){
+                if (doc.warning.toString().toLowerCase().includes(docFilterBy.toLowerCase())) {
+                  return doc;
+                }else if (doc.status.toString().toLowerCase().includes(docFilterBy.toLowerCase())) {
+                  return doc;
+                }else if (doc.emitter.toString().toLowerCase().includes(docFilterBy.toLowerCase())) {
+                  return doc;
+                }
+              }
+
+              if (docSearchBy !== ''){
+                if (doc.rut_employee.toString().toLowerCase().includes(docSearchBy.toLowerCase())) {
+                  return doc;
+                }else if (doc.rut_employee.toString().toLowerCase().includes(docSearchBy.toLowerCase())) {
+                  return doc;
+                }else if (doc.emitter.toString().toLowerCase().includes(docSearchBy.toLowerCase())) {
+                  return doc;
+                }else if (doc.vigency.toString().toLowerCase().includes(docSearchBy.toLowerCase())) {
+                  return doc;
+                }else if (doc.status.toString().toLowerCase().includes(docSearchBy.toLowerCase())) {
+                  return doc;
+                }else if (doc.rut_employee_company.toString().toLowerCase().includes(docSearchBy.toLowerCase())) {
+                  return doc;
+                }else if (doc.warning.toString().toLowerCase().includes(docSearchBy.toLowerCase())) {
+                  return doc;
+                }
+              }
+              
+            })
+            .sort(function (x, y) {
+              if(docSortBy === 'DocumentId'){
+                let a = x.DocumentId.toString(),
+                b = y.DocumentId.toString();
+                return a === b ? 0 : a > b ? 1 : -1;
+              }else if(docSortBy === 'warning'){
+                let a = x.warning.toUpperCase(),
+                b = y.warning.toUpperCase();
+                return a === b ? 0 : a > b ? 1 : -1;
+              }
+              else if(docSortBy === 'created_at'){
+                let a = new Date(x.created_at);
+                let b = new Date(y.created_at);
+                return a === b ? 0 : a > b ? 1 : -1;
+              }
+            })
+            .map((doc)=>(
+              <Col xs={12} sm={12} md={6} lg={6} xl={4} className="p-3" key={doc.DocumentId}>
+                <Card className='shadow-lg p-3 mb-5 rounded text-white' style={{ width: '18rem' }} bg={changeCardColor(doc.warning)}>
+                  <Card.Body>
+                  <Card.Title>Documento Id : {doc.DocumentId}</Card.Title>
+                  <Card.Text>
+                      <p><b>Rut Employee : </b>{doc.rut_employee}</p>
+                      <p><b>Emited at : </b> {formatDate(doc.emited_at)}</p>
+                      <p><b>Emitter : </b> {doc.emitter}</p>
+                      <p><b>Created at : </b>{formatDate(doc.created_at)}</p>
+                      <p><b>Expires at : </b>{formatDate(doc.expires_at)}</p>
+                      <p><b>Vigency : </b> {doc.vigency}</p>
+                  </Card.Text>
+                  <div className="d-flex flex-row-reverse">
+                      <Button variant="dark" onClick={() =>eyeBtn(doc.DocumentId)}><FaPlus /></Button>
+                  </div>
+                  </Card.Body>
+                </Card>
+              </Col>
+          ))
+            : <p>. . .</p>}
+          </Row>
+
+          {/* modal */}
+          {docDetails 
+          && 
+          <Modal 
+            size="lg"
+            className={changeModalColor(docDetails.warning)} 
+            show={show} 
+            onHide={() =>setShow(false)}
+          >
+            <Modal.Body>
+              <h4 className='mt-3'>Employee Details of ID : {docDetails.rut_employee}</h4>
+              <Row>
+              <Col xs={12} sm={6} md={6} lg={6} xl={6} className="p-3">
+                <p><b>Document Id : </b>{docDetails.DocumentId}</p>
+                <p><b>Emited at : </b> {formatDate(docDetails.emited_at)}</p>
+                <p><b>Expires at : </b>{formatDate(docDetails.expires_at)}</p>
+                <p><b>Emitter : </b> {docDetails.emitter}</p>
+                <p><b>Vigency : </b> {docDetails.vigency}</p>
+                <p><b>status : </b>{docDetails.status}</p>
+                <p><b>Joined at : </b>{formatDate(docDetails.joined_at)}</p>
+              </Col>
+              <Col xs={12} sm={6} md={6} lg={6} xl={6} className="p-3">
+                <p><b>Rut employee company : </b> {docDetails.rut_employee_company}</p>
+                <p><b>Required : </b> {boolToText(docDetails.is_required)}</p>
+                <p><b>Warning : </b> {docDetails.warning}</p>
+                <p><b>Created at : </b> {formatDate(docDetails.created_at)}</p>
+                <p><b>Updated at : </b> {formatDate(docDetails.updated_at)}</p>
+                <p><b>comment : </b> {docDetails.comment}</p>
+                <p><b>PDF file : </b> <Button variant="outline-light" onClick={() =>linkOpenTo(docDetails.file)}>Click here to view</Button></p>
+              </Col>
+              </Row>
+              <div className="d-flex flex-row-reverse p-4">
+                <Button variant="dark" onClick={() =>setShow(false)}>X</Button>
+              </div>
+            </Modal.Body>
+          </Modal>
+          }
+        </Col>
+      </Row>
+     
+     
     </Container>
     </>
   );
